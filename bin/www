@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+var debug = require('debug')('whyilove');
+var app = require('../app');
+var db = require('../db');
+var http = require('http');
+var port = process.env.PORT || 3000;
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+var socketHandler = require('../socket-handler');
+
+server.listen(port, function() {
+    debug('HTTP Server listening on port ' + server.address().port);
+});
+
+db.getClient().then(function(client) {
+    debug('Database client connected');
+});
+
+
+io.on('connection', function(socket) {
+    debug('Socket connected');
+    socketHandler(socket);
+});

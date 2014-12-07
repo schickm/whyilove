@@ -1,0 +1,33 @@
+html {
+    font-size: 16px;
+}
+html, body {
+    height: 100%;
+}
+
+body {
+    padding-top: 2em;
+}
+
+.reason {
+    margin: 0 auto;
+    width: 90%;
+}
+
+.reason-heading {
+    color: #999;
+    font-size: 3.5em;
+    font-style: italic;
+    text-align: center;
+}
+
+.number-wrapper {
+    display: inline-block;
+    width: 1em;
+    text-align: right;
+}
+
+#reason-content {
+    margin-top: 1em;
+    font-size: 2.5em;
+}

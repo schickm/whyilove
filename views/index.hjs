@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Why I Love {{ name }}</title>
+        <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <div class='reason'>
+            <h1 class='reason-heading'>Reason <span class='number-wrapper'>#<span id='number'></span></span></h1>
+
+            <p id='reason-content'></p>
+        </div>
+        
+        <script src='/socket.io/socket.io.js'></script>
+        <script>
+            var reasons = {{{ reasons }}};
+
+            var number = document.getElementById('number'),
+                content = document.getElementById('reason-content'),
+                body = document.getElementsByTagName('body')[0],
+                index = 0;
+
+            var socket = io.connect();
+
+
+            var getReason = function() {
+                if (reasons.length === 0) {
+                    return {id: 0, reason: 'Please don\'t be  offended, but there are reasons loaded in yet.'};
+                } else if (index >= reasons.length) {
+                    // cheap hack to refresh the page and get new sorted set
+                    location.reload();
+                } else {
+                    var r = reasons[index];
+                    index++;
+                    return r;
+                }
+            };
+
+            var showReason = function() {
+                var r = getReason();
+                number.innerHTML = r.id
+                content.innerHTML = r.reason;
+
+                socket.emit('v', r.id);
+            };
+
+            showReason();
+
+            body.addEventListener('click', showReason);
+            body.addEventListener('touchend', showReason);
+
+        </script>
+    </body>
+</html>
