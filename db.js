@@ -2,14 +2,20 @@
 
 var pg = require('pg');
 var Q = require('q');
+var jsonfile = require('jsonfile');
 
-var conString = 'postgres://matt@localhost/matt';
 var client, deferred;
+
+function getConnectionString () {
+    var json = jsonfile.readFileSync('database.json');
+    var conf = json.dev;
+    return 'postgres://'+ conf.user +':'+ conf.password +'@'+ conf.host +'/'+ conf.database;
+}
 
 module.exports = {
     getClient: function() {
         if ( ! client ) {
-            client = new pg.Client(conString);
+            client = new pg.Client(getConnectionString());
             deferred = Q.defer();
 
             client.connect(function(err) {
