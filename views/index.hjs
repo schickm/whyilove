@@ -29,7 +29,7 @@
 
             var getReason = function() {
                 if (reasons.length === 0) {
-                    return {id: 0, reason: 'Please don\'t be  offended, but there are reasons loaded in yet.'};
+                    return {id: 0, reason: 'Please don\'t be  offended, but there aren\'t any reasons loaded in yet.'};
                 } else if (index >= reasons.length) {
                     // cheap hack to refresh the page and get new sorted set
                     location.reload();
@@ -44,8 +44,11 @@
                 var r = getReason();
                 number.innerHTML = r.id
                 content.innerHTML = r.reason;
-
-                socket.emit('v', r.id);
+                if (r.id !== 0) {
+                    socket.emit('v', r.id);
+                } else {
+                    console.log('no reasons loaded, cannot load another');
+                }
             };
 
             showReason();
