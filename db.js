@@ -3,11 +3,12 @@
 var pg = require('pg');
 var Q = require('q');
 var jsonfile = require('jsonfile');
+var path = require('path');
 
 var client, deferred;
 
 function getConnectionString () {
-    var json = jsonfile.readFileSync('database.json');
+    var json = jsonfile.readFileSync(path.resolve(__dirname, 'database.json'));
     var conf = json.dev;
     return 'postgres://'+ conf.user +':'+ conf.password +'@'+ conf.host +'/'+ conf.database;
 }
