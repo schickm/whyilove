@@ -26,35 +26,36 @@
 
             var socket = io.connect();
 
+            var showReason = function(r) {
+                number.innerHTML = r.id
+                content.innerHTML = r.reason;
+                
+                socket.emit('v', r.id);
+            };
 
-            var getReason = function() {
-                if (reasons.length === 0) {
-                    return {id: 0, reason: 'Please don\'t be  offended, but there aren\'t any reasons loaded in yet.'};
-                } else if (index >= reasons.length) {
+            var newRandomReason = function() {
+                if (index >= reasons.length) {
                     // cheap hack to refresh the page and get new sorted set
                     location.reload();
                 } else {
-                    var r = reasons[index];
+                    showReason(reasons[index]);
                     index++;
-                    return r;
                 }
             };
 
-            var showReason = function() {
-                var r = getReason();
-                number.innerHTML = r.id
-                content.innerHTML = r.reason;
-                if (r.id !== 0) {
-                    socket.emit('v', r.id);
-                } else {
-                    console.log('no reasons loaded, cannot load another');
-                }
-            };
+            if (reasons.length === 0) {
+                showReason({
+                    id: 0, 
+                    reason: 'Please don\'t be  offended, but there aren\'t any reasons loaded in yet.'
+                });
+            } else {
+                newRandomReason();
 
-            showReason();
+                body.addEventListener('click', newRandomReason);
+                body.addEventListener('touchend', newRandomReason);
+            }
 
-            body.addEventListener('click', showReason);
-            body.addEventListener('touchend', showReason);
+            
 
         </script>
     </body>
