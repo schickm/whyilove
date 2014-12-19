@@ -2,6 +2,7 @@
     "dev": {
         "driver": "pg",
         "user": "matt",
+        "password": "",
         "host": "localhost",
         "database": "matt"
     }
